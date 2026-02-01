@@ -1,0 +1,34 @@
+# ─────────────────────────────────────────────────────────
+# config-server/src/main/resources/application.yml
+#
+# This is the ONLY yml that lives inside the Config Server
+# project itself.  It is NOT pushed to the remote config repo.
+# Its job: tell the server WHERE to fetch every other service's
+# config from and which profile is active.
+# ─────────────────────────────────────────────────────────
+
+spring:
+  application:
+    name: config-server
+
+  cloud:
+    config:
+      server:
+        git:
+          # Replace with your actual GitHub repo URL
+          uri: https://github.com/karangwaajika/library-config-repo.git
+          # If your YMLs live inside a subfolder, uncomment:
+          # search-paths: config
+          force-pull: true          # always pull latest on every request
+
+  profiles:
+    active: dev                     # default; override via CLI flag
+
+server:
+  port: 8888                        # standard Config Server port
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, env, refresh
